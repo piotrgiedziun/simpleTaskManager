@@ -1,7 +1,6 @@
 <?php
 /*
  * Simple Task Manager CMS
- * 
  */
 session_start();
 ob_start();

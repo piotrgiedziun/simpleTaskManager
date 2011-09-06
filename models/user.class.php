@@ -10,7 +10,7 @@ class User {
     private $mail;
     private $created;
     
-    public function __construct() {
+    public function __construct($id, $username, $password, $mail, $created) {
         //@TODO: insert data
     }
     
@@ -35,7 +35,7 @@ class User {
         if(strlen($password) < 4 || strlen($password) > 25 )
             return Validation::Error("Invalid password");
         
-        $this->password = mysql_escape_string($password);
+        $this->password = md5(mysql_escape_string($password));
     }
     
     /*
@@ -51,12 +51,49 @@ class User {
     }
     
     /*
-     * 
+     * @return user id
+     */
+    public function get_id() {
+        return $this->id;
+    }
+    
+     /*
+     * @return username
+     */
+    public function get_username() {
+        return $this->username;
+    }
+    
+     /*
+     * @return user mail
+     */
+    public function get_mail() {
+        return $this->mail;
+    }
+    
+     /*
+     * @return user creation date
+     */
+    public function get_created() {
+        return $this->created;
+    }
+    
+    /*
+     * Insert new user to database
      */
     public function insert() {
         //set current time
         $this->created = time();
         
         //@TODO: generate query
+    }
+    
+    /*
+     * checks whether the user data is correct
+     * @return false - when data is invalid
+     * @return new User() when data is valid
+     */
+    public static function data_is_valid($username, $password) {
+        //@TODO: login query
     }
 }

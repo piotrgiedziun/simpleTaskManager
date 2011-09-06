@@ -33,12 +33,12 @@ class System {
             $get_keys = array($get_key);
 
         /*
-         * Only alphanumeric characters are allowed
+         * Only alphanumeric characters and '-' are allowed
          * otherwise throws 404
          */
         foreach($get_keys as $value)
-            if($value!= '' && !preg_match('/^[a-zA-Z0-9]*$/', $value))
-                self::show_404('URL constains disallowed characters.');
+            if($value!= '' && !preg_match('/^[a-zA-Z0-9-]*$/', $value))
+                self::show_error('URL constains disallowed characters.');
 
         /*
          * class name extraction logic
@@ -61,7 +61,8 @@ class System {
         /**
          * method name extraction logic
          */
-        if(isset($get_keys[1]) && method_exists($class_obj, strtolower($get_keys[1])))
+        if(isset($get_keys[1]) && in_array($get_keys[1], get_class_methods($class))
+               && method_exists($class_obj, strtolower($get_keys[1])))
             $method = strtolower($get_keys[1]);
         elseif(isset($get_keys[1]) && strlen($get_keys[1]) != 0)
             self::show_404('Invalid method');
@@ -111,7 +112,7 @@ class System {
      */
     private static function load($dir, $file_name) {
         if(!file_exists($dir.'/'.$file_name.'.class.php'))
-            self::show_404('[SYSTEM ERROR] file '.$file_name.' ('.$dir.') not found.');
+            self::show_error('[SYSTEM ERROR] file '.$file_name.' ('.$dir.') not found.');
         
         require_once($dir.'/'.$file_name.'.class.php');
     }
@@ -124,6 +125,17 @@ class System {
     public static function show_404($message = '') {
         ob_end_clean();
         echo '[404] '.$message;
+        exit;
+    }
+    
+     /*
+     * Display error message.
+     * Break code execution after calling.
+     * @parm String $message (additional)
+     */
+    public static function show_error($message = '') {
+        ob_end_clean();
+        echo '[ERROR] '.$message;
         exit;
     }
 }
