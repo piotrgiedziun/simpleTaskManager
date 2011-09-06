@@ -4,7 +4,6 @@
  * allows include files, display errors
  */
 class System {
-    
     /*
      * only static acces 
      */
@@ -52,7 +51,6 @@ class System {
 
         self::load_controller(strtolower($class));
 
-        
         /*
          * Create instans of $class
          */
@@ -75,7 +73,7 @@ class System {
         $parms = array();
         for($i = 2; $i<count($get_keys); $i++)
             array_push($parms, $get_keys[$i]);
-
+           
         /*
          * call class method with parms
          */
@@ -123,7 +121,8 @@ class System {
      * @parm String $message (additional)
      */
     public static function show_404($message = '') {
-        ob_end_clean();
+        if(!DEBUG)
+            ob_end_clean();
         echo '[404] '.$message;
         exit;
     }
@@ -134,8 +133,26 @@ class System {
      * @parm String $message (additional)
      */
     public static function show_error($message = '') {
-        ob_end_clean();
+        if(!DEBUG)
+            ob_end_clean();
         echo '[ERROR] '.$message;
         exit;
+    }
+    
+    /*
+     * get data form confing file
+     * sandbox mode
+     */
+    public static function get_config($type, $index) {
+        if(!file_exists('config/'.$type.'.php'))
+            self::show_error('Config file "'.$type.'" not found');
+        {
+            include('config/'.$type.'.php');
+            
+            if(!isset($config[$index]))
+                self::show_error('Config index "'.$index.'" not found');
+            
+            return $config[$index];
+        }
     }
 }

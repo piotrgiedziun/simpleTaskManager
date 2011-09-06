@@ -10,8 +10,13 @@ class User {
     private $mail;
     private $created;
     
-    public function __construct($id, $username, $password, $mail, $created) {
-        //@TODO: insert data
+    public function __construct() {}
+    
+    public function set_data($id, $username, $mail, $created) {
+        $this->id = $id;
+        $this->username = $username;
+        $this->mail = $mail;
+        $this->created = $created;
     }
     
     /*
@@ -23,7 +28,7 @@ class User {
         if( !preg_match('/^[a-zA-Z0-9]{4,10}$/', $username) )
             return Validation::Error("Invalid username");
         
-        $this->username = mysql_escape_string($username);
+        $this->username = strtolower($username);
     }
     
     /*
@@ -35,7 +40,7 @@ class User {
         if(strlen($password) < 4 || strlen($password) > 25 )
             return Validation::Error("Invalid password");
         
-        $this->password = md5(mysql_escape_string($password));
+        $this->password = md5($password);
     }
     
     /*
@@ -47,7 +52,7 @@ class User {
         if( !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $mail) )
             return Validation::Error('Invalid email');
         
-        $this->mail = mysql_escape_string($mail);
+        $this->mail = strtolower($mail);
     }
     
     /*
@@ -94,6 +99,6 @@ class User {
      * @return new User() when data is valid
      */
     public static function data_is_valid($username, $password) {
-        //@TODO: login query
+        print_r(Database::select('*', 'Users', array('id'=>2), null, 1));
     }
 }

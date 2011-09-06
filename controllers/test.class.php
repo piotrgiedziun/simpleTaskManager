@@ -30,6 +30,7 @@ class Test extends Controller {
         }else{
             $this->set_output($result);
         }
+        User::data_is_valid('', '');
         $this->set_output('test from test');
     }
 }

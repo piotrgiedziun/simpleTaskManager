@@ -12,9 +12,9 @@
  * 
  */
 
-$database = array();
-$database['server']    = 'localhost';
-$database['user']      = 'root';
-$database['password']  = 'root';
-$database['database']  = 'simple_task_manager';
-$database['prefix']    = '';
+$config = array();
+$config['server']    = 'localhost';
+$config['user']      = 'root';
+$config['password']  = 'root';
+$config['database']  = 'simple_task_manager';
+$config['prefix']    = '';

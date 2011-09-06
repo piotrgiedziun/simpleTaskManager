@@ -3,7 +3,9 @@
  * Controller class
  */
 class Controller {
-   public function __construct() {
+   protected $db;
+   
+   public function __construct() {      
        
    }
    
