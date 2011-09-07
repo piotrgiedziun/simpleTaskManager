@@ -3,10 +3,11 @@
  * Simple Task Manager CMS
  */
 session_start();
-ob_start();
-define('SYSTEM', 1);
-define('DEBUG', 1);
 
+define('SYSTEM', 1);
+
+require_once('config/constants.php');
+require_once('system/global.functions.php');
 require_once('system/system.class.php');
 
 System::load_system('database');

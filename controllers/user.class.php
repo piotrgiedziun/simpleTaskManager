@@ -6,21 +6,73 @@ class UserController extends Controller {
     
     public function __construct() {
         parent::__construct();
-        /**
-         * Include additional models lib
-         */
-        System::load_model('user');
     }
     
     public function index() {
-        $this->render("template");
+        //@TODO: user list (?)
+        $this->set_output('user index');
     }
     
-    public function create_account($parm1=NULL, $parm2=NULL) {
+    public function logout() {
+        if(isset($_SESSION['logged_user'])) {
+            $_SESSION['logged_user'] = NULL;
+            session_destroy();
+        }
+        redirect('user/login');
+    }
+    
+    public function profile($id = NULL) {
+        /**
+         * get user data
+         * if $id is not valid show user profile
+         */
+        if(!is_numeric($id) && !is_logged()){
+            System::show_404('User not found');
+        }elseif(is_numeric($id)) {
+            $u = User::get_user($id);
+        }elseif(is_logged()) {
+            $u = $this->logged_user();
+        }
+        
+        if(!$u)
+            System::show_404('User not found');
+        
+        print_r($u);
+    }
+    
+    public function login() {
+        /**
+         * redirect to base_url if is logged
+         */
+        if(isset($_SESSION['logged_user']))
+            redirect();
+        
+        $data = array();
+        $username = @$_POST['username'];
+        $password = @$_POST['password'];
+        
+        if(isset($username) && isset($password) 
+                && strlen($username) > 0 && strlen($password) > 0) {
+            
+            $user_data = User::data_is_valid($username, $password);
+            if($user_data) {
+                $_SESSION['logged_user'] = serialize($user_data);
+                redirect();
+            }else{
+                $data['is_error'] = true;
+            }      
+        }
+        
+        $this->render("template", array(
+            'body'  => $this->render("login", $data, TRUE)
+        ));
+    }
+    
+    public function create_account() {
         $u = new User();
-        $u->set_username("JDtest");
-        $u->set_password("totest");
-        $u->set_mail("totest");
+        $u->set_username("test");
+        $u->set_password("test");
+        $u->set_mail("test@test.pl");
         
         $result = new Validation();
 
@@ -30,7 +82,6 @@ class UserController extends Controller {
         }else{
             $this->set_output($result);
         }
-        User::data_is_valid('', '');
         $this->set_output('test from test');
     }
 }

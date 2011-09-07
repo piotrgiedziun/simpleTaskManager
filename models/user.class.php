@@ -109,7 +109,7 @@ class User {
     public static function get_user($id = NULL) {
         if(!is_numeric($id)) System::show_404 ('Invalid user id');
         
-        $result = Database::select('*', self::table, array('id'=>$id), NULL, 1);
+        $result = Database::select('id,username,mail,created', self::table, array('id'=>$id), NULL, 1);
         
         if($result) {
             $u = new User($result);
@@ -121,11 +121,18 @@ class User {
     
     /**
      * checks whether the user data is correct
-     * @return false - when data is invalid
-     * @return new User() when data is valid
+     * @return false when data is invalid
+     * @return user_data when data is valid
      */
     public static function data_is_valid($username, $password) {
-        print_r(Database::select('*', self::table, array('id'=>2), null, 1));
-        Database::update(self::table, array('password'=>'tajne'), array('id'=>2));
+        
+        $user_data = Database::select(
+                'id,username,mail,created',
+                self::table,
+                array('username'=>$username, 'password'=>md5($password)),
+                null,
+                1);
+
+        return is_object($user_data)&&isset($user_data->id) ? $user_data : false;        
     }
 }

@@ -10,6 +10,10 @@ class IndexController extends Controller {
     }
     
     public function index() {
-        $this->set_output('index form index');        
+        if(is_logged()) {
+            $this->set_output('Hi '.$this->logged_user()->get_username().'!');
+        }else{
+            $this->set_output('index form index');     
+        }
     }
 }

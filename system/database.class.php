@@ -42,7 +42,7 @@ class Database {
      * Select statement
      * --------------------------------------------------------------
      * @param String $what data to be retrieved (eg. "*", "id")
-     * @param String $from table name (eh. "Users")
+     * @param String $from table name (eg. "Users")
      * @param String/Array $where - where statement (eg. array('id'=>1, 'uid'=>2), "id = 2")
      * @param String $order_by order by statement (eg. "id ASC", "price DESC")
      * @param int/String $limit - limit statement (eg. "1", "0,10")
@@ -94,9 +94,23 @@ class Database {
     
     /**
      * Insert statement
+     * --------------------------------------------------------------
+     * @param String $table table name (eg. "Users")
+     * @param Array $data array of data (eg. array('id'=>1, 'username'=>'test'))
+     * --------------------------------------------------------------
+     * @return insert id/false (false while error occurred)
+     * --------------------------------------------------------------
+     * @example
+     * 
+     * Database::insert(self::table, array(
+     *       'username'  => 'test',
+     *       'password'  => md5('test'),
+     *       'mail'      => 'test@test.pl',
+     *       'created'   => time()
+     *  ));
      */
     public static function insert($table, $data) {
-        if(!is_array($data)) return;
+        if(!is_array($data)) return false;
         
         $query_sql = 'INSERT INTO `'.mysql_escape_string($table).'` (';
         
@@ -116,10 +130,22 @@ class Database {
     }
     
     /**
+     * Update statement
+     * --------------------------------------------------------------
+     * @param String $table table name (eg. "Users")
+     * @param Array $data data to update (eg. array('id'=>1, 'username'=>'test'))
+     * @param String/Array $where where statement (eg. array('id'=>2), "id=2")
+     * --------------------------------------------------------------
+     * @return mysql_query/false (false while error occurred)
+     * --------------------------------------------------------------
+     * @example
      * 
+     * Database::update(self::table, array(
+     *      'id'  => 2
+     * ), null);
      */
     public static function update($table, $data, $where) {
-        if(!is_array($data)) return;
+        if(!is_array($data)) return false;
         
         $query_sql = 'UPDATE `'.mysql_escape_string($table).'` SET ';
         
@@ -144,7 +170,7 @@ class Database {
     }
     
     /**
-     * 
+     * For custom query and internal usage (insert, update etc.)
      */
     public static function query($query_sql) { 
         
