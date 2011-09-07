@@ -1,27 +1,27 @@
 <?php if(!defined('SYSTEM')) exit('No direct script access allowed');
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * User controller class
  */
-class Test extends Controller {
+class UserController extends Controller {
     
     public function __construct() {
         parent::__construct();
+        /**
+         * Include additional models lib
+         */
+        System::load_model('user');
     }
     
     public function index() {
-        $this->set_output('index form test');
+        $this->render("template");
     }
     
-    public function test($parm1=NULL, $parm2=NULL) {
-        print_r($parm1);
-        print_r($parm2);
-        System::load_model('user');
-
+    public function create_account($parm1=NULL, $parm2=NULL) {
         $u = new User();
-        $u->set_username("JDt");
-        $u->set_password("to");
-
+        $u->set_username("JDtest");
+        $u->set_password("totest");
+        $u->set_mail("totest");
+        
         $result = new Validation();
 
         if($result->is_valid()){

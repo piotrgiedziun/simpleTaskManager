@@ -10,10 +10,10 @@ class System {
     private function __construct() {}
     
     /*
-     * System initialization
+     * Application layer initialization
      * extracts from the address URL logic of class, methods, parms
      */
-    public static function init() {
+    public static function init_app_layer() {
         /*
          * extracting information form GET request
          * remove first slash, get first index element form $_GET
@@ -32,11 +32,11 @@ class System {
             $get_keys = array($get_key);
 
         /*
-         * Only alphanumeric characters and '-' are allowed
+         * Only alphanumeric characters and '-_' (but can not start with "_") are allowed
          * otherwise throws 404
          */
         foreach($get_keys as $value)
-            if($value!= '' && !preg_match('/^[a-zA-Z0-9-]*$/', $value))
+            if($value!= '' && (!preg_match('/^[a-zA-Z0-9-_]*$/', $value) || $value[0] == '_') )
                 self::show_error('URL constains disallowed characters.');
 
         /*
@@ -52,8 +52,9 @@ class System {
         self::load_controller(strtolower($class));
 
         /*
-         * Create instans of $class
+         * Create instans of $classController
          */
+        $class = ucfirst($class).'Controller';
         $class_obj = new $class();
 
         /**
@@ -109,6 +110,9 @@ class System {
      * @param String $file_name
      */
     private static function load($dir, $file_name) {
+         if(!preg_match('/^\w+$/', $view_file))
+            self::show_error('[SYSTEM ERROR] file name contains illegal characters');
+               
         if(!file_exists($dir.'/'.$file_name.'.class.php'))
             self::show_error('[SYSTEM ERROR] file '.$file_name.' ('.$dir.') not found.');
         

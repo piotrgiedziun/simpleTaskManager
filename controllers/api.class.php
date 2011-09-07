@@ -3,11 +3,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-class Api extends Controller {
+class ApiController extends Controller {
+    
     public function __construct() {
         parent::__construct();
     }
-    public function index() {
+    
+    public function tasks($action = '') {
         $this->set_output('api');
+    }
+    
+    public function users($action = '') {
+        
     }
 }

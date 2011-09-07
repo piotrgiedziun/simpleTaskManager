@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Simple Task Manager CMS
  */
 session_start();
@@ -15,4 +15,6 @@ System::load_system('validation');
 
 Database::connect();
 
-System::init();
+System::init_app_layer();
+
+Database::close();
