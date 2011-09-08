@@ -22,21 +22,24 @@ class System {
 
         /**
          * explode when there is more data
-         * eg.
+         * replace '-' to '/', you might use both seperators
+         * --------------------------------------------------------------
+         * @example
          * Following URL will be converted to array of elements
          * controller/function/parm1 => array('contoller', 'function', 'parm1')
          */
+        $get_key = str_replace('-', '/', $get_key);
         if(is_numeric(strpos($get_key, '/'))) 
             $get_keys = explode('/', $get_key);
         else 
             $get_keys = array($get_key);
 
         /**
-         * Only alphanumeric characters and '-_' (but can not start with "_") are allowed
+         * Only alphanumeric characters and '_' (but can not start with '_') are allowed
          * otherwise throws 404
          */
         foreach($get_keys as $value)
-            if($value!= '' && (!preg_match('/^[a-zA-Z0-9-_]*$/', $value) || $value[0] == '_') )
+            if($value!= '' && (!preg_match('/^[a-zA-Z0-9_]*$/', $value) || $value[0] == '_') )
                 self::show_error('URL constains disallowed characters.');
 
         /*

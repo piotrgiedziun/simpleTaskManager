@@ -10,7 +10,7 @@ class UserController extends Controller {
     
     public function index() {
         //@TODO: user list (?)
-        $this->set_output('user index');
+        $this->render('template', array('body'=>'user lisr'));
     }
     
     public function logout() {
@@ -21,7 +21,7 @@ class UserController extends Controller {
         redirect('user/login');
     }
     
-    public function profile($id = NULL) {
+    public function profile($id = NULL, $username = NULL) {
         /**
          * get user data
          * if $id is not valid show user profile
@@ -62,26 +62,37 @@ class UserController extends Controller {
                 $data['is_error'] = true;
             }      
         }
-        
-        $this->render("template", array(
-            'body'  => $this->render("login", $data, TRUE)
+
+        $this->render('template', array(
+            'body'  => $this->render('login', $data, TRUE)
         ));
     }
     
     public function create_account() {
-        $u = new User();
-        $u->set_username("test");
-        $u->set_password("test");
-        $u->set_mail("test@test.pl");
-        
-        $result = new Validation();
+        $data = array();
+        $username = @$_POST['username'];
+        $password = @$_POST['password'];
+        $mail     = @$_POST['mail'];
 
-        if($result->is_valid()){
-            $this->set_output('ok');
-            $u->insert();
-        }else{
-            $this->set_output($result);
+        if(isset($username) && isset($password) && isset($mail)) {
+
+            $u = new User();
+            $u->set_username($username);
+            $u->set_password($password);
+            $u->set_mail($mail);
+
+            $result = new Validation();
+
+            if($result->is_valid()){
+                $u->insert();
+                redirect();
+            }else{
+                $data['is_error'] = $result;
+            }
         }
-        $this->set_output('test from test');
+        
+        $this->render('template', array(
+            'body'  => $this->render('create_account', $data, TRUE)
+        ));
     }
 }

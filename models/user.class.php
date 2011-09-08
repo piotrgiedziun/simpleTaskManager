@@ -29,8 +29,13 @@ class User {
      * @param String $username 
      */
     public function set_username($username) {
-        if( !preg_match('/^[a-zA-Z0-9]{4,10}$/', $username) )
-            return Validation::Error("Invalid username");
+        if( !preg_match('/^[a-zA-Z0-9]{4,20}$/', $username) )
+            return Validation::Error("Invalid username. Must be 4 to 20 length and might use only alphanumeric characters");
+
+        $result = Database::select('username', self::table, array('username'=>$username), NULL, 1);
+
+        if(is_object($result)) 
+            return Validation::Error("Username already taken");
         
         $this->username = strtolower($username);
     }
@@ -42,7 +47,7 @@ class User {
      */
     public function set_password($password) {
         if(strlen($password) < 4 || strlen($password) > 25 )
-            return Validation::Error("Invalid password");
+            return Validation::Error("Invalid password. Must be 4 to 25 length");
         
         $this->password = md5($password);
     }
@@ -55,6 +60,11 @@ class User {
     public function set_mail($mail) {
         if( !preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $mail) )
             return Validation::Error('Invalid email');
+        
+        $result = Database::select('mail', self::table, array('mail'=>$mail), NULL, 1);
+
+        if(is_object($result)) 
+            return Validation::Error("Mail already taken");
         
         $this->mail = strtolower($mail);
     }
