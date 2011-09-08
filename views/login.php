@@ -1,4 +1,4 @@
-<form action="" method="POST">
+<form action="<?=base_url();?>user/login" method="POST">
     <table>
         <tr>
             <td colspan="2">

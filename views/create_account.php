@@ -4,7 +4,9 @@
             <td colspan="2">
                 <h2>Create account</h2>
                 <? if(isset($is_error)): ?>
+                <div class="error">
                     <?=$is_error; ?>
+                </div>
                 <? endif; ?>
             </td>
         </tr>

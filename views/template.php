@@ -4,8 +4,14 @@
 	<meta charset="utf-8" />
 	<title>Simple Task Manager</title>
 	<link rel="stylesheet" href="<?=base_url();?>assets/css/style.css" type="text/css" media="screen" />
-    <link  href="http://fonts.googleapis.com/css?family=Copse:regular" rel="stylesheet" type="text/css" >
+        <link  href="http://fonts.googleapis.com/css?family=Copse:regular" rel="stylesheet" type="text/css" >
 	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script>
+            <? foreach($javascript_code as $code): ?>
+                <?=$code;?>
+            <? endforeach; ?>
+        </script>
 </head>
 <body>
 <div id="wrapper"><!-- #wrapper -->
@@ -15,6 +21,9 @@
                         <? if(is_logged()): ?>
                         <ul>
                             <li><a class="menu_item" href="<?=base_url();?>">Home</a></li>
+                            <li><a class="menu_item" href="<?=base_url();?>user/profile">My Account</a></li>
+                            <li><a class="menu_item" href="#">More</a></li>
+                            <li><a class="menu_item" href="#">Contact</a></li>
                             <li><a class="menu_item" href="<?=base_url();?>user/logout">Logout</a></li>
                         </ul>
                         <? else: ?>

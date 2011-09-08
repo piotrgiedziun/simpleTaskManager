@@ -7,6 +7,7 @@ class Controller {
     private static $output_buffer = '';
     private static $view_varivale = array();
     private $logged_user = NULL;
+    private $javascript_code = array();
     
     public function __construct() {
         System::load_model('User');
@@ -14,6 +15,14 @@ class Controller {
         $this->logged_user = is_logged() ? new User(unserialize($_SESSION['logged_user'])) : NULL;
     }
    
+    /**
+     * do not call if overwrite
+     * return 404 if index (in subclass not exists)
+     */
+    public function index() {
+        System::show_404();
+    }
+    
     /**
      * @return User 
      */
@@ -62,6 +71,8 @@ class Controller {
            if($return_output)
                ob_start();
            
+           $javascript_code = $this->javascript_code;
+           
            if(count(self::$view_varivale) > 0)
                extract(self::$view_varivale);
 
@@ -73,6 +84,14 @@ class Controller {
                return $conteten;
            }
        }
+   }
+   
+   /**
+    * add javascript code to template
+    * @param String $script (don't attach <script> tags)
+    */
+   public function javascript_add($script) {
+       $this->javascript_code[] = $script;
    }
    
    /**

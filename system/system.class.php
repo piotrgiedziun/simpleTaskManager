@@ -128,7 +128,7 @@ class System {
      * @parm String $message (additional)
      */
     public static function show_404($message = '') {
-        echo '[404] '.$message;
+        include('views/404_page.php');
         exit;
     }
     
@@ -138,7 +138,7 @@ class System {
      * @parm String $message (additional)
      */
     public static function show_error($message = '') {
-        echo '[ERROR] '.$message;
+        include('views/error_page.php');
         exit;
     }
     

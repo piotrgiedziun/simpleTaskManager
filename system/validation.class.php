@@ -30,11 +30,11 @@ class Validation {
      * simple way to print formated data
      */
     public function __toString() {
-        $string = '<div class="error">';
+        $string = '';
             foreach (self::$messages as $message)
                 $string .= $message.'<br />';
         
-        return $string.'</div>';
+        return $string;
     }
     
     /**

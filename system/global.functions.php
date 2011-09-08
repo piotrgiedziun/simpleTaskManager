@@ -24,3 +24,24 @@ function redirect($url='') {
 function is_logged() {
     return isset($_SESSION['logged_user'])?true:false;
 }
+
+/**
+ * show message
+ * render new template with message
+ * @param String type $message
+ * @param String $redirect_url (default NULL)
+ */
+function show_message($message='', $redirect_url=NULL) {
+     $c = new Controller();
+     
+     //@TODO: javascript redirect
+     if($redirect_url != NULL) {
+        $c->javascript_add('alert("'.$redirect_url.'");');
+        $message .= '<br /><a href="'.$redirect_url.'">Click here to continue</a>';
+     }
+     
+     $c->render('template', array(
+        'body'  => $message
+     ));
+     exit;
+}

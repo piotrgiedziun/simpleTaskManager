@@ -116,7 +116,7 @@ class Database {
         
         foreach($data as $index=>$value)
             $query_sql .= '`'.mysql_escape_string($index).'`, ';
-        
+
         //remove last comma
         $query_sql = substr($query_sql, 0, -2).') VALUES (';
         

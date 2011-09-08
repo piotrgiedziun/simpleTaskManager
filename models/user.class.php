@@ -100,7 +100,7 @@ class User {
     /**
      * Insert new user to database
      */
-    public function insert() {
+    public function create() {
         //set current time
         $this->created = time();
         
@@ -110,6 +110,16 @@ class User {
             'mail'      => mysql_escape_string($this->mail),
             'created'   => $this->created
         ));
+    }
+    
+    /**
+     * Update user data
+     */
+    public function update($fields = array()) {
+        if(!is_numeric($this->id)) return false;
+        //$this->updated = time(); @TODO: add updated field
+        foreach($fields as $field)
+            Database::update(self::table, array($field => $this->$field), array('id'=>$this->id));
     }
     
     /**
