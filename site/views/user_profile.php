@@ -8,7 +8,7 @@
     </tr>
     <? if($logged_account): ?>
     <tr>
-         <td colspan="2"><a href="#">Change password</a></td>
+         <td colspan="2"><a href="<?=base_url();?>user/change_password">Change password</a></td>
     </tr>
     <? endif; ?>
 </table>

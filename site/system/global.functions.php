@@ -36,7 +36,7 @@ function show_message($message='', $redirect_url=NULL) {
      
      //@TODO: javascript redirect
      if($redirect_url != NULL) {
-        $c->javascript_add('alert("'.$redirect_url.'");');
+        $c->javascript_add('setTimeout(\'window.location = "'.$redirect_url.'"\', 5000);');
         $message .= '<br /><a href="'.$redirect_url.'">Click here to continue</a>';
      }
      

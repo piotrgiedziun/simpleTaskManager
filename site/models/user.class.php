@@ -9,6 +9,7 @@ class User {
     private $password;
     private $mail;
     private $created;
+    private $updated;
     const table = 'Users';
     
     /**
@@ -108,7 +109,8 @@ class User {
             'username'  => strip_tags(mysql_escape_string($this->username)),
             'password'  => mysql_escape_string($this->password),
             'mail'      => mysql_escape_string($this->mail),
-            'created'   => $this->created
+            'created'   => $this->created,
+            'updated'   => $this->created
         ));
     }
     
@@ -117,9 +119,14 @@ class User {
      */
     public function update($fields = array()) {
         if(!is_numeric($this->id)) return false;
-        //$this->updated = time(); @TODO: add updated field
+        $this->updated = time();
+        
         foreach($fields as $field)
-            Database::update(self::table, array($field => $this->$field), array('id'=>$this->id));
+            Database::update(
+                    self::table,
+                    array($field => $this->$field, 'updated'=>$this->updated),
+                    array('id'=>$this->id)
+                    );
     }
     
     /**
