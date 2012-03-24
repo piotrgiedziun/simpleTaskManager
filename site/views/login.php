@@ -11,12 +11,16 @@
             </td>
         </tr>
         <tr>
-            <td>Username</td>
-            <td><input type="text" name="username" placeholder="Username" required autofocus/></td>
+            <td><label for="username">Username</label></td>
+            <td><input id="username" type="text" name="username" placeholder="Username" required autofocus/></td>
         </tr>
         <tr>
             <td>Password</td>
             <td><input type="password" name="password" placeholder="Password" required/></td>
+        </tr>
+        <tr>
+            <td><label for="remember">Remember me</label></td>
+            <td><input type="checkbox" id="remember" name="remember" value="remember"/></td>
         </tr>
         <tr>
             <td colspan="2">

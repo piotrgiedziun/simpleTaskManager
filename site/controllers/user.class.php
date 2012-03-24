@@ -7,12 +7,7 @@ class UserController extends Controller {
     public function __construct() {
         parent::__construct();
     }
-    
-    public function index() {
-        //@TODO: user list (?)
-        $this->render('template', array('body'=>'user lisr'));
-    }
-    
+        
     public function logout() {
         if(isset($_SESSION['logged_user'])) {
             $_SESSION['logged_user'] = NULL;
@@ -23,7 +18,7 @@ class UserController extends Controller {
     
     public function change_password() {
          if(!is_logged())
-            System::show_404();
+            show_404();
         
         $data = array();
         $new_password = @$_POST['new_password'];
@@ -38,7 +33,7 @@ class UserController extends Controller {
             $result = new Validation();
 
                 if($result->is_valid()){
-                    $u->update(array('password'));
+                    $u->update('password');
                     show_message('succes message');
                 }else{
                     $data['is_error'] = $result;
@@ -59,19 +54,19 @@ class UserController extends Controller {
          * if $id is not valid show user profile
          */
         if(!is_numeric($id) && !is_logged()){
-            System::show_404('User not found');
+            show_404('User not found');
         }elseif(is_numeric($id) && isset($username)) {
             $u = User::get_user($id);
             if($u->get_username() != $username)
-                System::show_404('User not found');
+                show_404('User not found');
         }elseif($id == NULL && is_logged()) {
             $u = $this->logged_user();
         }else{
-            System::show_404('User not found');
+            show_404('User not found');
         }
 
         if(!$u)
-            System::show_404('User not found');
+            show_404('User not found');
         
         if(is_logged())
             $logged_account = $this->logged_user()->get_id()==$u->get_id()?TRUE:FALSE;
@@ -101,6 +96,10 @@ class UserController extends Controller {
             
             $user_data = User::data_is_valid($username, $password);
             if($user_data) {
+                $remember = @$_POST['remember'];
+                if(isset($remember) && $remember == 'remember') {
+                    setcookie( session_name(), session_id(), time() + 86400*30, '/' );
+                }
                 $_SESSION['logged_user'] = serialize($user_data);
                 show_message('succes message', base_url());
             }else{
@@ -113,7 +112,19 @@ class UserController extends Controller {
         ));
     }
     
-    public function create_account() {
+    public function delete() {
+        if(!is_logged())
+            show_404();
+            
+        $u = $this->logged_user();
+        $u->delete();
+        
+        $_SESSION['logged_user'] = NULL;
+        session_destroy();
+        show_message("account has been deleted<br/> <br/> Don't worry.<br /><strong>We still love You <3</strong>", base_url());
+    }
+    
+    public function signup() {
         $data = array();
         $username = @$_POST['username'];
         $password = @$_POST['password'];
@@ -130,7 +141,7 @@ class UserController extends Controller {
 
             if($result->is_valid()){
                 $u->create();
-                show_message('succes message');
+                show_message('account created');
             }else{
                 $data['is_error'] = $result;
             }

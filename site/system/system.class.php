@@ -21,6 +21,16 @@ class System {
         $get_key = substr(key($_GET), 1);
 
         /**
+         * include routes
+         * search for existings key
+         */
+        include('config/routes.php');
+ 
+        foreach($routes as $find=>$replace)
+            if($find == $get_key)
+                $get_key = $replace;
+        
+        /**
          * explode when there is more data
          * replace '-' to '/', you might use both seperators
          * --------------------------------------------------------------
@@ -40,7 +50,7 @@ class System {
          */
         foreach($get_keys as $value)
             if($value!= '' && (!preg_match('/^[a-zA-Z0-9_]*$/', $value) || $value[0] == '_') )
-                self::show_error('URL constains disallowed characters.');
+                show_error('URL constains disallowed characters.');
 
         /*
          * class name extraction logic
@@ -48,9 +58,11 @@ class System {
         if(isset($get_keys[0]) && file_exists('controllers/'.strtolower($get_keys[0]).'.class.php'))
             $class = strtolower($get_keys[0]);
         elseif(isset($get_keys[0]) && strlen($get_keys[0]) != 0) 
-            self::show_404('Invalid class');
-        else
+            show_404('Invalid class');
+        elseif(file_exists('controllers/index.class.php'))
             $class = 'index';
+        else
+            show_404('Create index class');
 
         self::load_controller(strtolower($class));
 
@@ -67,9 +79,11 @@ class System {
                && method_exists($class_obj, strtolower($get_keys[1])))
             $method = strtolower($get_keys[1]);
         elseif(isset($get_keys[1]) && strlen($get_keys[1]) != 0)
-            self::show_404('Invalid method');
-        else
+            show_404('Invalid method');
+        elseif(in_array('index', get_class_methods($class)))
             $method = 'index';
+        else
+            show_404();
         
         /**
          * parms extraction logic
@@ -113,33 +127,14 @@ class System {
      * @param String $file_name
      */
     private static function load($dir, $file_name) {
+         $file_name = strtolower($file_name);
          if(!preg_match('/^\w+$/', $file_name))
-            self::show_error('[SYSTEM ERROR] file name contains illegal characters');
+            show_error('[SYSTEM ERROR] file name contains illegal characters');
                
         if(!file_exists($dir.'/'.$file_name.'.class.php'))
-            self::show_error('[SYSTEM ERROR] file '.$file_name.' ('.$dir.') not found.');
+            show_error('[SYSTEM ERROR] file '.$file_name.' ('.$dir.') not found.');
         
         require_once($dir.'/'.$file_name.'.class.php');
-    }
-    
-    /**
-     * Display 404 message.
-     * Break code execution after calling.
-     * @parm String $message (additional)
-     */
-    public static function show_404($message = '') {
-        include('views/404_page.php');
-        exit;
-    }
-    
-    /**
-     * Display error message.
-     * Break code execution after calling.
-     * @parm String $message (additional)
-     */
-    public static function show_error($message = '') {
-        include('views/error_page.php');
-        exit;
     }
     
     /**
@@ -148,12 +143,12 @@ class System {
      */
     public static function get_config($type, $index) {
         if(!file_exists('config/'.$type.'.php'))
-            self::show_error('Config file "'.$type.'" not found');
+            show_error('Config file "'.$type.'" not found');
         {
             include('config/'.$type.'.php');
             
             if(!isset($config[$index]))
-                self::show_error('Config index "'.$index.'" not found');
+                show_error('Config index "'.$index.'" not found');
             
             return $config[$index];
         }

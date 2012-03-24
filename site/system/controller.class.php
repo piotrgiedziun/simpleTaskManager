@@ -14,15 +14,7 @@ class Controller {
 
         $this->logged_user = is_logged() ? new User(unserialize($_SESSION['logged_user'])) : NULL;
     }
-   
-    /**
-     * do not call if overwrite
-     * return 404 if index (in subclass not exists)
-     */
-    public function index() {
-        System::show_404();
-    }
-    
+       
     /**
      * @return User 
      */
@@ -59,10 +51,10 @@ class Controller {
     */
    public function render($view_file, $data = array(), $return_output=false) {
        if(!preg_match('/^\w+$/', $view_file))
-         System::show_error('File name contains illegal characters');
+           show_error('File name contains illegal characters');
          
        if(!file_exists('views/'.$view_file.'.php'))
-           System::show_error('View file ('.$view_file.') not found');
+           show_error('View file ('.$view_file.') not found');
        
        if(is_array($data) && count($data) > 0)
            self::$view_varivale = array_merge(self::$view_varivale, $data);
@@ -106,5 +98,35 @@ class Controller {
     */
    public function set_output($value) {
        self::$output_buffer = $value;
+   }
+   
+   /**
+    * parse data to JSON String
+    * @param Array $array 
+    */
+   public function set_json_output($array) {
+       /**
+        * set is_error to false
+        */
+       $array = array_merge($array, array('is_error'=>false));
+       
+       $this->set_output(json_encode($array));
+   }
+   
+   /**
+    * parse error to JSON String
+    * @param String $message 
+    */
+   public function set_json_error($message, $error_code=-1) {
+       $this->set_output(json_encode(array(
+           'is_error'       => true,
+           'error_code'     => $error_code,
+           'error_message' => $message
+       )));
+       /**
+        * call destructor
+        * will print stored data
+        */
+       exit;
    }
 }

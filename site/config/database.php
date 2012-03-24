@@ -16,5 +16,5 @@ $config = array();
 $config['server']    = 'localhost';
 $config['user']      = 'root';
 $config['password']  = 'root';
-$config['database']  = 'simple_task_manager';
+$config['database']  = 'database_stm';
 $config['prefix']    = '';

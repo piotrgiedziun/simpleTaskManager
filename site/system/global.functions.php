@@ -45,3 +45,38 @@ function show_message($message='', $redirect_url=NULL) {
      ));
      exit;
 }
+
+/**
+ * Display 404 message.
+ * Break code execution after calling.
+ * @parm String $message (additional)
+ */
+ function show_404($message = 'Page not found') {
+    include('views/404_page.php');
+    exit;
+ }
+    
+ /**
+  * Display error message.
+  * Break code execution after calling.
+  * @parm String $message (additional)
+  */
+ function show_error($message = '') {
+    include('views/error_page.php');
+    exit;
+ }
+ 
+ /**
+  * generate salt
+  */
+ function generate_salt(){
+    $string = '';
+    $possible = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+    for($i=0;$i < 6;$i++) {
+        $char = $possible[mt_rand(0, strlen($possible)-1)];
+        $string .= $char;
+    }
+
+    return $string;
+ }

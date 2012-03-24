@@ -32,10 +32,10 @@ class Database {
         ); 
         
         if(!self::$connection)
-            System::show_error('Database connection error');
+            show_error('Database connection error');
         
         if(!@mysql_select_db(System::get_config('database', 'database'), self::$connection))
-            System::show_error('Can not connect to database.');
+            show_error('Can not connect to database.');
     }
     
     /**
@@ -165,8 +165,88 @@ class Database {
         }else{
             $query_sql .= ' WHERE '.mysql_escape_string($where);
         }
+
+        return self::query($query_sql);
+    }
+    
+    /**
+     * Delete by id query statement
+     * --------------------------------------------------------------
+     * @param String table
+     * @param int id
+     * --------------------------------------------------------------
+     * @return boolean - status
+     * --------------------------------------------------------------
+     * @example
+     * 
+     * Database::delete_by_id(self::table, $id);
+     */
+    public static function delete_by_id($table, $id) {
+        $query_sql = 'DELETE FROM '.mysql_escape_string($table).' WHERE `id` = "'.mysql_escape_string($id).'"';
         
         return self::query($query_sql);
+    }
+    
+    /**
+     * Delete query statement
+     * --------------------------------------------------------------
+     * @param String table
+     * @param String/Array where
+     * --------------------------------------------------------------
+     * @return boolean - result
+     * --------------------------------------------------------------
+     * @example
+     * 
+     * Database::delete(self::table, 'date < NOW()');
+     */
+    public static function delete($table, $where) {
+        $query_sql = 'DELETE FROM '.mysql_escape_string($table);
+        
+        if(is_array($where)) {
+            $query_sql .= ' WHERE ';
+            foreach($where as $key=>$value)
+                $query_sql .= '`'.$key.'` = "'.mysql_escape_string($value).'" AND ';
+            
+            //remove last AND
+            $query_sql = substr($query_sql, 0, -4);
+        }else{
+            $query_sql .= ' WHERE '.mysql_escape_string($where);
+        }
+        
+        return self::query($query_sql);
+    }
+    
+    /**
+     * Return rows count
+     * --------------------------------------------------------------
+     * @param String $table
+     * @param String/Array $where
+     * --------------------------------------------------------------
+     * @return int rows count 
+     * --------------------------------------------------------------
+     * @example
+     * 
+     * Database::count(self::table, array(
+     *          'type'    => 1
+     * ));
+     */
+    public static function count($table, $where) {
+        $query_sql = 'SELECT COUNT( * ) AS `count` FROM  `'.mysql_escape_string($table).'`';
+        
+        if(is_array($where)) {
+            $query_sql .= ' WHERE ';
+            foreach($where as $key=>$value)
+                $query_sql .= '`'.$key.'` = "'.mysql_escape_string($value).'" AND ';
+            
+            //remove last AND
+            $query_sql = substr($query_sql, 0, -4);
+        }else{
+            $query_sql .= ' WHERE '.mysql_escape_string($where);
+        }
+        
+        $result = mysql_fetch_object(self::query($query_sql));
+        
+        return isset($result->count)?$result->count:0;
     }
     
     /**
@@ -177,7 +257,7 @@ class Database {
         $result  = mysql_query($query_sql, self::$connection); 
 
         if (!$result ) { 
-            System::show_error('Error while getting data form mysql');
+            show_error('Error while getting data form mysql');
             return 0; 
         }
 
@@ -190,6 +270,6 @@ class Database {
      */
     static public function close() { 
         if(!@mysql_close(self::$connection))
-             System::show_error('Error while closing database'); 
+             show_error('Error while closing database'); 
     }
 }

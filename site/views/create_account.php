@@ -1,4 +1,4 @@
-<form action="<?=base_url();?>user/create_account" method="POST">
+<form action="<?=base_url();?>user/signup" method="POST">
     <table>
         <tr>
             <td colspan="2">

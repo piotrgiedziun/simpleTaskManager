@@ -1,7 +1,12 @@
 <?php
 /**
  * Simple Task Manager CMS
+ * @source https://github.com/piotrgiedziun/simple-task-manager
+ * @git https://github.com/piotrgiedziun/simple-task-manager.git
  */
+ini_set("session.gc_maxlifetime","2592000");
+session_set_cookie_params( 86400*30 );
+
 session_start();
 
 define('SYSTEM', 1);
