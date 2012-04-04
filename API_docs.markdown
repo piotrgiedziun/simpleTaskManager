@@ -310,7 +310,7 @@ You must POST the following parameters
 | **Parameter**  | **Description**
 |:---------------|----------------------------------:|
 | username       | (4 to 200 **alphanumeric** chars)
-| priority		   | (4 to 25 chars)
+| password		   | (4 to 25 chars)
 | mail			     | valid email address
 
 ### Response data
