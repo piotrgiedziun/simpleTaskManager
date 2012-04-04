@@ -102,7 +102,7 @@ Server will return the following data
 | [create](#create) | create new task assign to logged user
 | [update](#update) | edit existing task (by id)
 | [delete](#delete)	| delete existing task (by id)
-| [get](#get)		| get all tasks or get more data about specific task (by id)
+| [get](#get)	     	| get all tasks or get more data about specific task (by id)
 
 ## 1. <a name="create"></a>Create
 #### Make an *HTTP POST* request to
@@ -114,11 +114,11 @@ You must POST the following parameters
 | **Parameter**  | **Description**
 |:---------------|----------------------------------:|
 | message        | Task description. Maximum length is 255 chars
-| priority		 | integer value ``("1" for normal, "2" for high)`` priority
-| status_id		 | integer value ``("0" for waiting, "1" for in progress, "3" for complete)`` status
-| deadline		 | integer value (unix time)
+| priority		   | integer value ``("1" for normal, "2" for high)`` priority
+| status_id		   | integer value ``("0" for waiting, "1" for in progress, "3" for complete)`` status
+| deadline		   | integer value (unix time)
 | session_token	 | token value received in [basic authentication - step 2](#auth_2)
-| signature		 | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
+| signature		   | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
 
 ### PARMS_STRING value 
 > 	message=(message)&priority=(priority)&status_id=(status_id)&deadline-(deadline)&session_token=(session_token)
@@ -133,8 +133,8 @@ Server will return the following data
 ### Handling possible exceptions
 | **Code**       | **Description**
 |:---------------|----------------------------------:|
-| -1             | validation error (invalid parameter). More information about error will be returned in error_message field
-| 5 			 | invalid signature
+| -1             | validation error (invalid parameter). More information about error will be returned in [error_message field](#errors)
+| 5 			       | invalid signature
 
 ### Example
 >	POST:<br/>
@@ -150,15 +150,15 @@ Server will return the following data
 ### POST parameters
 You must POST the following parameters
 
-| **Parameter**        | **Description**
-|:---------------------|----------------------------------:|
+| **Parameter**         | **Description**
+|:----------------------|----------------------------------:|
 | message *(optional)*  | Task description. Maximum length is 255 chars
 | status_id	*(optional)*| integer value ``("0" for waiting, "1" for in progress, "3" for complete)`` status
 | priority *(optional)* | integer value ``("1" for normal, "2" for high)`` priority
 | deadline *(optional)* | integer value (unix time)
-| task_id				| integer value (task id)
+| task_id				        | integer value (task id)
 | session_token	        | token value received in [basic authentication - step 2](#auth_2)
-| signature		        | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
+| signature		          | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
 
 ### PARMS_STRING value
 > 	[message=(message)&status_id=(status_id)...]&task_id=(task_id)&session_token=(session_token)
@@ -173,8 +173,8 @@ Server will return the following data
 ### Handling possible exceptions
 | **Code**       | **Description**
 |:---------------|----------------------------------:|
-| -1             | validation error (invalid parameter). More information about error will be returned in error_message field
-| 4 			 | task not found
+| -1             | validation error (invalid parameter). More information about error will be returned in [error_message field](#errors)
+| 4 			       | task not found
 | 5              | invalid signature
 
 ### Example
@@ -195,7 +195,7 @@ You must POST the following parameters
 |:---------------|----------------------------------:|
 | task_id        | integer value (task id)
 | session_token	 | token value received in [basic authentication - step 2](#auth_2)
-| signature		 | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
+| signature		   | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
 
 ### PARMS_STRING value
 > 	task_id=(task_id)&session_token=(session_token)
@@ -210,8 +210,8 @@ Server will return the following data
 ### Handling possible exceptions
 | **Code**       | **Description**
 |:---------------|----------------------------------:|
-| -1             | validation error (invalid parameter). More information about error will be returned in error_message field
-| 4 			 | task not found
+| -1             | validation error (invalid parameter). More information about error will be returned in [error_message field](#errors)
+| 4 			       | task not found
 | 5              | invalid signature
 
 ### Example
@@ -231,7 +231,7 @@ You must POST the following parameters
 | **Parameter**  | **Description**
 |:---------------|----------------------------------:|
 | session_token	 | token value received in [basic authentication - step 2](#auth_2)
-| signature		 | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
+| signature		   | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
 
 ### PARMS_STRING value
 > 	session_token=(session_token)
@@ -241,7 +241,7 @@ Server will return the following data
 
 | **Index**      | **Description**
 |:---------------|----------------------------------:|
-| data			 | array of tasks assign to logged user
+| data			     | array of tasks assign to logged user
 
 ### Handling possible exceptions
 | **Code**       | **Description**
@@ -271,7 +271,7 @@ You must POST the following parameters
 |:---------------|----------------------------------:|
 | task_id        | integer value (task id)
 | session_token	 | token value received in [basic authentication - step 2](#auth_2)
-| signature		 | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
+| signature		   | ``md5(API_SECRET_KEY+user_token+parms_string)`` [more](#signature)
 
 ### PARMS_STRING value
 > 	task_id=(task_id)&session_token=(session_token)
@@ -287,7 +287,7 @@ Server will return the following data
 | **Code**       | **Description**
 |:---------------|----------------------------------:|
 | -1             | internal error
-| 4 			 | task not found
+| 4 			       | task not found
 | 5              | invalid signature
 
 ### Example
@@ -310,8 +310,8 @@ You must POST the following parameters
 | **Parameter**  | **Description**
 |:---------------|----------------------------------:|
 | username       | (4 to 200 **alphanumeric** chars)
-| priority		 | (4 to 25 chars)
-| mail			 | valid email address
+| priority		   | (4 to 25 chars)
+| mail			     | valid email address
 
 ### Response data
 Server will return the following data
@@ -325,9 +325,9 @@ Server will return the following data
 | **Code**       | **Description**
 |:---------------|----------------------------------:|
 | -1             | invalid parms
-| 100 			 | invalid username
-| 101 			 | invalid password
-| 102 			 | invalid mail
+| 100 			     | invalid username
+| 101 			     | invalid password
+| 102 			     | invalid mail
 
 ### Example
 >	POST:<br/>
@@ -339,9 +339,10 @@ Server will return the following data
 ---------
 
 # <a name="signature"></a>Signature
-signature is a way to protect data from being edited. signature creation scheme is as follows:
+signature is a way to protect data from being modyfied
 
-1.	sequence is important
+## signature creation scheme is as follows:
+1.	**sequence order is important**
 2.	app should have API_SECRET_KEY as constant variable
 3.	user_token should be stored in database
 4.	parms_string md5 of all data sent (of course with session_token)
